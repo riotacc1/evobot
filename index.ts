@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { Bot } from "./structs/Bot";
+import { startExpressServer } from "./expressServer"; // Import the Express server
 
 export const bot = new Bot(
   new Client({
@@ -13,3 +14,5 @@ export const bot = new Bot(
     ]
   })
 );
+
+startExpressServer(); // Start the Express server

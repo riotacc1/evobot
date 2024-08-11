@@ -13,10 +13,12 @@ import { readdirSync } from "fs";
 import { join } from "path";
 import { Command } from "../interfaces/Command";
 import { checkPermissions, PermissionResult } from "../utils/checkPermissions";
-import { config } from "../utils/config";
 import { i18n } from "../utils/i18n";
 import { MissingPermissionsException } from "../utils/MissingPermissionsException";
 import { MusicQueue } from "./MusicQueue";
+import dotenv from "dotenv";
+
+dotenv.config(); // Load environment variables
 
 export class Bot {
   public readonly prefix = "/";
@@ -27,7 +29,7 @@ export class Bot {
   public queues = new Collection<Snowflake, MusicQueue>();
 
   public constructor(public readonly client: Client) {
-    this.client.login(config.TOKEN);
+    this.client.login(process.env.DISCORD_TOKEN);
 
     this.client.on("ready", () => {
       console.log(`${this.client.user!.username} ready!`);
@@ -42,7 +44,7 @@ export class Bot {
   }
 
   private async registerSlashCommands() {
-    const rest = new REST({ version: "9" }).setToken(config.TOKEN);
+    const rest = new REST({ version: "9" }).setToken(process.env.DISCORD_TOKEN!);
 
     const commandFiles = readdirSync(join(__dirname, "..", "commands")).filter((file) => !file.endsWith(".map"));
 
